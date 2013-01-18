@@ -166,6 +166,7 @@ void RealIcon( unsigned int );
 void FKey_Display( int, void* );
 void GetFKeyPtr( int, void* );
 void DispInt( int, int ); //not sure what this does, doesn't seem to be documented anywhere. will test some day (gbl08ma)
+int LocalizeMessage1( int msgno, char*result );
 
 //Not syscalls (defined within libfxcg):
 void VRAM_CopySprite(const color_t* data, int x, int y, int width, int height);
