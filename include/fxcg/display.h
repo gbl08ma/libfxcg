@@ -7,7 +7,7 @@ extern "C" {
 
 #define LCD_WIDTH_PX 384
 #define LCD_HEIGHT_PX 216
-
+typedef unsigned short color_t;
 //General display manipulating syscalls:
 struct display_fill {
     int x1;
@@ -47,7 +47,7 @@ struct display_shape {
 	int wx;
 	int wy;
 	int color;
-	TBdispFillArea saved;
+	void* saved;
 };
 void Bdisp_ShapeBase3XVRAM( void*shape );
 void Bdisp_ShapeBase( unsigned char*work, struct display_shape *shape, int color, int line_width, int zero1, int zero2 );
@@ -174,9 +174,6 @@ void VRAM_XORSprite(const color_t* data, int x, int y, int width, int height);
 
 // Original Author, Shaun McFall (Merthsoft)
 // Used with permission
-
-
-typedef unsigned short color_t;
 
 #define COLOR_ALICEBLUE (color_t)0xF7DF
 #define COLOR_ANTIQUEWHITE (color_t)0xFF5A
