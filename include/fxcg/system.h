@@ -38,6 +38,9 @@ void OS_InnerWait_ms(int);
 void CMT_Delay_100micros(int); //does CMT stand for Composable Memory Transactions? Couldn't find documentation on this
 void CMT_Delay_micros(int); //   nor on this (gbl08ma)
 
+void Alpha_SetData( char VarName, void* Src );
+void Alpha_GetData( char VarName, void* Dest );
+
 #ifdef __cplusplus
 }
 #endif
