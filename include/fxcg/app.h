@@ -20,6 +20,9 @@ void App_Optimize();
 void ResetAllDialog( void );
 unsigned char*GetAppName( unsigned char*name );
 
+void App_InitDlgDescriptor( void*P1, unsigned char P2 );
+void APP_LINK_transmit_select_dialog( void*buffer1, void*buffer2 );
+
 #ifdef __cplusplus
 }
 #endif
