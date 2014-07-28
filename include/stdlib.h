@@ -19,6 +19,7 @@ int sys_rand(void);
 void sys_srand(unsigned seed);
 
 long strtol(const char *str, char **str_end, int base);
+long long strtoll(const char *str, char **str_end, int base);
 #define atoi(s) ((int)strtol(s, NULL, 10))
 #define atol(s) strtol(s, NULL, 10)
 int sys_atoi(const char * s);

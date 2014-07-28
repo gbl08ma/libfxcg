@@ -62,6 +62,27 @@ long strtol(const char *str, char **str_end, int base) {
     return v;
 }
 
+long long strtoll(const char *str, char **str_end, int base) {
+    long long v = 0;
+    unsigned short v_in;
+    // TODO handle {+,-} sign indicators, octal (0), hex (0[Xx]) prefixes
+    while (isspace(*str))
+        str++;
+
+    while (*str != 0 && (v_in = strtol_consume(*str++, base)) >= 0) {
+        long long vc = ((long long)v * base) + v_in;
+        /*if (vc > LLONG_MAX)  // Handle overflow
+            return LLONG_MAX;
+        else if (vc < LLONG_MIN)
+            return LLONG_MIN;*/
+
+        v = (v * base) + v_in;
+    }
+    if (str_end != NULL)
+        *str_end = (char *)str;
+    return v;
+}
+
 double strtod(const char *s, char **str_end) {
     // TODO handle exponential format, hex format, inf, nan
     double r = 0.0;

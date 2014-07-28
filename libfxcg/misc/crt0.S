@@ -24,6 +24,19 @@ dataLoop:
     bra dataLoop
     add #4, r2              ! Delay slot
 dataDone:
+
+! Copy .ocram2 section into the second additional on-chip RAM
+    mov.l v_ocram2ld, r0      ! From
+    mov.l v_socram2, r2       ! To
+    mov.l v_eocram2, r3       ! Limit
+ocram2Loop:
+    cmp/hs r3, r2
+    bt ocram2Done             ! Stop when r2 >= r3
+    mov.l @r0+, r1
+    mov.l r1, @r2
+    bra ocram2Loop
+    add #4, r2              ! Delay slot
+ocram2Done:
  
 ! Zero out .bss
     mov.l v_ram_ebss, r2    ! To
@@ -78,3 +91,9 @@ v_ram_bbss:
 v_ram_ebss:
     .long _ebss
  
+v_ocram2ld:
+    .long _ocram2ld
+v_eocram2:
+    .long _eocram2
+v_socram2:
+    .long _socram2

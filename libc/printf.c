@@ -62,11 +62,6 @@ static int _printf_decimal(va_list *ap, writer_t writer, const void *dest, forma
     return count + _printf_do_udecimal(x, writer, dest, fmt);
 }
 
-static int _printf_shortest_lower(va_list *ap, writer_t writer, const void *dest, format_t fmt) {
-    writer(dest, 'g');
-    return 1;
-}
-
 static int _printf_char(va_list *ap, writer_t writer, const void *dest, format_t fmt) {
     char c = va_arg(*ap, int);
     writer(dest, c);
@@ -124,11 +119,19 @@ void _writer_buffer(const void *wdest, char c) {
 
 // Used for catching end-of-string while grabbing chars
 // Used within switch blocks, so can't break.
-#define _NEXT(fmt) if ((c = *fmt++) == 0) return count;
+#define _NEXT(fmt) if ((c = *fmt++) == 0) goto out;
 
-// TODO mostly incomplete.  Python parser only depends on %d and %s, so this
-// is mostly placeholder code.
-static int _v_printf(const char *fmt, va_list ap, writer_t writer, const void *warg) {
+// TODO mostly incomplete.  Python parser only depends on %d and %s, so this is
+// mostly placeholder code.
+static int _v_printf(const char *fmt, va_list ap_in, writer_t writer, const void
+        *warg) {
+    // The va_copy here is dumb, but necessary for things to work on x86_64.
+    // See GCC bug #14557, but the issue boils down to va_list being
+    // transparently passed by reference so &ap is wrong if ap is a function
+    // parameter.
+    va_list ap;
+    va_copy(ap, ap_in);
+
     // Bytes transmitted
     int count = 0;
     format_t f = {
@@ -270,8 +273,6 @@ static int _v_printf(const char *fmt, va_list ap, writer_t writer, const void *w
             case 'e':
             case 'E':
             case 'g':
-                formatter = _printf_shortest_lower;
-                break;
             case 'G':
             case 'a':
             case 'A':
@@ -284,6 +285,8 @@ static int _v_printf(const char *fmt, va_list ap, writer_t writer, const void *w
         }
         formatter(&ap, writer, warg, f);
     }
+out:
+    va_end(ap);
     return count;
 }
 
