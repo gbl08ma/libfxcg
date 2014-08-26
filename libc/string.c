@@ -139,6 +139,7 @@ char *strncat(char *dest, const char *src, size_t num) {
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
+	if(n <= 0) return 0;
 	while (*s1 != 0 && *s2 != 0) {
 		n--;
 		if (*s1 != *s2 || n == 0)
@@ -151,6 +152,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 int strncasecmp(const char *s1, const char *s2, size_t n) {
+	if(n <= 0) return 0;
 	while (*s1 != 0 && *s2 != 0) {
 		n--;
 		if (tolower(*s1) != tolower(*s2) || n == 0)
