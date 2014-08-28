@@ -29,12 +29,8 @@ double strtod(const char *s, char **str_end);
 
 void qsort(void *base, size_t nel, size_t width, int (*compar)(const void *, const void *));
 
-<<<<<<< HEAD
 void exit(int status) __attribute__ ((noreturn));
-=======
-void exit(int status);
 void abort();
->>>>>>> upstream/master
 
 #ifdef __cplusplus
 }
