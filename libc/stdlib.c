@@ -26,31 +26,41 @@ void exit(int status) {
       GetKey(&key); 
 }
 
-#if __WORDSIZE == 64 
-#define ABS_LONG_MIN 9223372036854775808UL 
-#else 
-#define ABS_LONG_MIN 2147483648UL 
-#endif 
-long int strtol(const char *nptr, char **endptr, int base) {
-    //From dietlibc
-    int neg=0;
-    unsigned long int v;
-    const char*orig=nptr;
+static unsigned char strtol_consume(unsigned char c, int base) {
+    c = toupper(c);
+    if (!isalnum(c))
+        return -1;
 
-    while(isspace(*nptr)) nptr++;
+    if ((c - '0') < 10)
+        c = c - '0';
+    else
+        c = (c - 'A') + 10;
 
-    if (*nptr == '-' && isalnum(nptr[1])) { neg=-1; ++nptr; }
-    v=strtoul(nptr,endptr,base);
-    if (endptr && *endptr==nptr) *endptr=(char *)orig;
-    if (v>=ABS_LONG_MIN) {
-        if (v==ABS_LONG_MIN && neg) {
-            errno=0;
-            return v;
-        }
-        errno=ERANGE;
-        return (neg?LONG_MIN:LONG_MAX);
+    if (c >= base)
+        return -1;
+    else
+        return c;
+}
+
+long strtol(const char *str, char **str_end, int base) {
+    long v = 0;
+    unsigned short v_in;
+    // TODO handle {+,-} sign indicators, octal (0), hex (0[Xx]) prefixes
+    while (isspace(*str))
+        str++;
+
+    while (*str != 0 && (v_in = strtol_consume(*str++, base)) >= 0) {
+        long long vc = ((long long)v * base) + v_in;
+        if (vc > LONG_MAX)  // Handle overflow
+            return LONG_MAX;
+        else if (vc < LONG_MIN)
+            return LONG_MIN;
+
+        v = (v * base) + v_in;
     }
-    return (neg?-v:v);
+    if (str_end != NULL)
+        *str_end = (char *)str;
+    return v;
 }
 
 long long strtoll(const char *str, char **str_end, int base) {
@@ -124,9 +134,9 @@ double strtod(const char *s, char **str_end) {
     return raw.r;
 }
 
-/*
-void qsort(void *base, size_t nel, size_t width,
-           int (*compar)(const void *, const void *)) {
-#warning qsort unimplemented
+int abs(int i) {
+    if (i < 0)
+        return -i;
+    else
+        return i;
 }
-*/
