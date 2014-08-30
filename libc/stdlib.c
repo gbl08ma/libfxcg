@@ -19,11 +19,22 @@ void free(void *ptr) {
     sys_free(ptr);
 }
 
-void exit(int status) { 
-   fprintf(stderr, "TERMINATED (%i)\nPress menu key to exit\n", status); 
-   int key; 
-   while(1) 
-      GetKey(&key); 
+void exit(int status) {
+    /* TODO: if necessary, perform cleanup here, and call functions
+     * registered to be run at exit with a future implementation of
+     * atexit.
+     */
+    fprintf(stderr, "TERMINATED (%i)\nPress menu key to exit\n", status);
+    int key;
+    while(1)
+        GetKey(&key);
+}
+
+void abort() {
+    fprintf(stderr, "ABORT CALLED\nPress menu key to exit\n");
+    int key;
+    while(1)
+        GetKey(&key);
 }
 
 static unsigned char strtol_consume(unsigned char c, int base) {
