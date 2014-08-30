@@ -52,4 +52,12 @@ SECTIONS
                 *(COMMON)
                 _ebss = . ;
         } >ram
+        
+        /* Second on-chip RAM area */
+        .ocram2 : {
+                _ocram2ld = LOADADDR(.ocram2) ;
+                _socram2 = . ;
+                *(.ocram2) *(.ocram2.*) *(COMMON); 
+                _eocram2 = . ;
+        } >ocram2 AT>rom
 }
