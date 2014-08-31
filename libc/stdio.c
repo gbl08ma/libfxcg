@@ -60,7 +60,7 @@ FILE *fopen(const char *path, const char *mode) {
     }
 
     // Get a handle from the system
-    Bfile_StrToName_ncpy(chars16, (unsigned char*)path, plen+1);
+    Bfile_StrToName_ncpy(chars16, path, plen+1);
     int syshandle = Bfile_OpenFile_OS(chars16, sysmode, 0);
 
     if (syshandle < 0) {
@@ -180,7 +180,7 @@ static size_t fwrite_term(const void *ptr, size_t size, size_t nitems,
 
         // Cast to wider type for correct pointers
         int termx = stream->termx, termy = stream->termy;
-        PrintMiniMini(&termx, &termy, (unsigned char*)outp, 0, TEXT_COLOR_BLACK, 0);
+        PrintMiniMini(&termx, &termy, outp, 0, TEXT_COLOR_BLACK, 0);
 
         // CR/LF if applicable
         if(eol)
@@ -357,7 +357,7 @@ void perror(const char *s) {
 
 int remove(const char *name) {
     uint16_t *widepath = alloca(2 * strlen(name) + 1);
-    Bfile_StrToName_ncpy(widepath, (unsigned char*)name, strlen(name));
+    Bfile_StrToName_ncpy(widepath, name, strlen(name));
 
     int ret = Bfile_DeleteEntry(widepath);
     if (ret >= 0) {
@@ -378,9 +378,9 @@ int remove(const char *name) {
 
 int rename(const char *old, const char *new) {
     uint16_t *wideold = alloca(2 * strlen(old) + 1);
-    Bfile_StrToName_ncpy(wideold, (unsigned char*)old, strlen(old));
+    Bfile_StrToName_ncpy(wideold, old, strlen(old));
     uint16_t *widenew = alloca(2 * strlen(new) + 1);
-    Bfile_StrToName_ncpy(widenew, (unsigned char*)new, strlen(new));
+    Bfile_StrToName_ncpy(widenew, new, strlen(new));
 
     int ret = Bfile_RenameEntry(wideold, widenew);
     if (ret >= 0) {
@@ -394,7 +394,7 @@ int rename(const char *old, const char *new) {
 
 int mkdir(const char *path, unsigned mode) {
     uint16_t *widepath = alloca(2 * strlen(path) + 1);
-    Bfile_StrToName_ncpy(widepath, (unsigned char*)path, strlen(path));
+    Bfile_StrToName_ncpy(widepath, path, strlen(path));
 
     int ret = Bfile_CreateEntry_OS(widepath, CREATEMODE_FOLDER, 0);
     if (ret >= 0) {

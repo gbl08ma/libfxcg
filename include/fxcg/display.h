@@ -128,17 +128,17 @@ enum
   TEXT_MODE_TRANSPARENT_BACKGROUND = 0x20,
   TEXT_MODE_AND = 0x21
 };
-void PrintLine(const unsigned char *msg, int imax);
-void PrintLine2(int, int, const unsigned char *, int, int, int, int, int);
+void PrintLine(const char *msg, int imax);
+void PrintLine2(int, int, const char *, int, int, int, int, int);
 void PrintXY_2( int mode, int x, int y, int msgno, int color );
 void PrintXY( int x, int y, const char *string, int mode, int color );
-void PrintCXY( int, int, const unsigned char *, int, int, int, int, int, int );
+void PrintCXY( int, int, const char *, int, int, int, int, int, int );
 void PrintGlyph( int, int, unsigned char*glyph, int, int color, int back_color, int );
 void*GetMiniGlyphPtr( unsigned short mb_glyph_no, unsigned short*glyph_info );
 void PrintMiniGlyph(int x, int y, void*glyph, int mode_flags, int glyph_width, int, int, int, int, int color, int back_color, int );
-void PrintMini( int *x, int *y, const unsigned char *MB_string, int mode_flags, unsigned int xlimit, int P6, int P7, int color, int back_color, int writeflag, int P11 );
-void PrintMiniMini( int *x, int *y, const unsigned char *MB_string, int mode1, char color, int mode2 );
-void Print_OS( const unsigned char*msg, int mode, int zero2 );
+void PrintMini( int *x, int *y, const char *MB_string, int mode_flags, unsigned int xlimit, int P6, int P7, int color, int back_color, int writeflag, int P11 );
+void PrintMiniMini( int *x, int *y, const char *MB_string, int mode1, char color, int mode2 );
+void Print_OS( const char*msg, int mode, int zero2 );
 void Bdisp_WriteSystemMessage( int x, int y, int msgno, int mode, char color3 );
 
 //Progressbars and scrollbars:
