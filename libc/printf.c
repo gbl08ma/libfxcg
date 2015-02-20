@@ -286,6 +286,7 @@ static int _v_printf(const char *fmt, va_list ap_in, writer_t writer, const void
         formatter(&ap, writer, warg, f);
     }
 out:
+    writer(warg, 0); // null-terminate string
     va_end(ap);
     return count;
 }
